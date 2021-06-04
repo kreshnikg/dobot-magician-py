@@ -17,6 +17,9 @@ class Dobot:
         self.connected = False
         self.dobotConnect()
 
+    def __del__(self):
+        self.dobotDisconnect()
+
     def dobotConnect(self):
         if self.connected:
             print("Dobot is already connected")
@@ -36,6 +39,7 @@ class Dobot:
         dType.SetHOMEParams(self.api, self.homeX, self.homeY, self.homeZ, 0, isQueued=0)
 
     def dobotDisconnect(self):
+        self.moveHome()
         dType.DisconnectDobot(self.api)
 
     def moveXY(self, x, y):
@@ -52,3 +56,6 @@ class Dobot:
 
     def getPosition(self):
         return dType.GetPose(self.api)
+
+    def moveHome(self):
+        dType.SetHOMECmdEx(self.api, 0)
